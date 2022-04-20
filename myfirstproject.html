@@ -30,6 +30,67 @@
       request.send(null);
     }
   </script>
+
+  <script type="application/javascript" src="http://ipinfo.io/?format=jsonp&callback=getIP"></script>
+  <script>
+  const IP_URLs = [
+  'https://api.ipify.org/',
+  'https://ipecho.net/plain',
+  'https://api.kwelo.com/v1/network/ip-address/my',
+  'https://myexternalip.com/raw',
+  ];
+  async function getIPFromNextSite(urls) {
+  for (const url of urls) {
+  try {
+  const response = await fetch(url);
+  const text = await response.text();
+  if (isValidIP(text)) {
+  // Send control flow to the consuming .then block:
+  return text;
+  }
+  } catch(e) {
+  // Don't do anything, just continue on to next iteration
+  }
+  }
+  // Send control flow to the consuming .catch block:
+  throw new Error('No more URLs');
+  }
+  function isValidIP(txt) {
+  return /^(?!0)(?!.*\.$)((1?\d?\d|25[0-5]|2[0-4]\d)(\.|$)){4}$/.test(txt);
+  }
+  const getIP = urls => getIPFromNextSite(urls);
+
+  getIP(IP_URLs).then(console.log);
+  <script><script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    async function getIpClient() {
+      try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getIpClient();
+  </script>
+  <script>
+  const url = "https://api.ipify.org/?format=json"
+  fetch(url)
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+    async function getIpClient() {
+      try {
+        const response = await axios.get('https://api.ipify.org?format=json');
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    getIpClient();
+  </script>
   <script src=
             "https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js">
   </script>
@@ -37,10 +98,10 @@
   <script>
 
     /* Add "https://api.ipify.org?format=json" statement
-        this will communicate with the ipify servers in
-        order to retrieve the IP address $.getJSON will
-        load JSON-encoded data from the server using a
-        GET HTTP request */
+               this will communicate with the ipify servers in
+               order to retrieve the IP address $.getJSON will
+               load JSON-encoded data from the server using a
+               GET HTTP request */
 
     $.getJSON("https://api.ipify.org?format=json", function(data) {
 
@@ -53,8 +114,8 @@
 <body>
 <center>
   <h1>My Responsive Javascript On HTML Page</h1>
-  <p id="request"></p>
   <h3>Public IP Address of user is:</h3>
+
   <p id="gfg"></p>
   <script type="application/javascript">
     function getIP(json) {
